@@ -1,0 +1,55 @@
+title {
+  Solving A Simple Stupid Linear System
+}
+
+matrix {
+  0 a12 a13
+  a21 a22 0
+  0 a32 a33
+}
+
+vector {
+  b1
+  b2
+  b3
+}
+
+\section{Original system}
+\label{original}
+Assuming the unknown variable vector is represented as $\variablevec$,
+what we do is solve the following problem:
+\[
+\originalmat
+ *
+\variablevec
+=
+\originalvec
+. \]
+Equivalently, we can consider the following linear system:\\
+\originaltab
+
+\section{Triangularized system}
+\label{triangle}
+Now, using Gaussian Elimination we obtain the following matrix equation:
+\[
+\trianglemat
+*
+\variablevec
+=
+\trianglevec
+\]
+Equivalently, the linear system:\\
+\triangletab
+
+\section{Solution}
+Now, the solution for the system described in Section~\ref{original} and
+triangularized in Section~\ref{triangle} is:
+\[ \solutionmat \]
+It can also be written as equalities:\\
+\solutiontab
+
+\section{Conclusion}
+I don't know who did this but it's pretty fucking awesome.
+\newline
+
+See ya.

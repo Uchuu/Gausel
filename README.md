@@ -16,6 +16,6 @@ You can also only specify the linear system (as in examples/testtextfree), the b
 The syntax itself is pretty much self explanatory.
 
 Try it without doing anything with
-java -jar release/gausel_2.9.2-1.0-onejar.jar examples/testwithtext
+java -jar release/v1.0/gausel_2.9.2-1.0-onejar.jar examples/testwithtext
 
 Do not hesitate to contact the developper for questions / bugs / other things.
