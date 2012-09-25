@@ -18,3 +18,4 @@ target/
 trunk/project/plugins/lib_managed/
 trunk/project/plugins/project/
 trunk/project/plugins/src_managed/
+*.tar.gz
