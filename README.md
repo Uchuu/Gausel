@@ -2,7 +2,7 @@ Gausel
 ======
 
 Solves a linear system symbolically and produces a LaTeX file containing all the information linked to the resolution as new commands.
-The matrix coefficients can either be zeros, symbols (which are assumed to be different from 0) or integer/rational values.
+The matrix coefficients can either be zeros, symbols (which are assumed to be different from 0) or/and integer/rational values.
 
 Use sbt 0.7.7 to compile the source. Generate the jar with:
 >cd trunk/
