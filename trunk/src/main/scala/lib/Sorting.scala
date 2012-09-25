@@ -1,7 +1,33 @@
+/*
+ * Copyright (c) 2012 Dame Ningen.
+ * All rights reserved.
+ *
+ * This file is part of Gausel.
+ *
+ * Gausel is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Gausel is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Gausel.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package gausel.lib
 
 import scala.annotation.tailrec
 
+/** Trait for sorting algorithms.
+ * 
+ * @author dameNingen <dame.ningen@mail.com>
+ * @version $Revision$
+ * $Id$
+ */
 trait Sorting[T] {
   /** Sorts the input list.
    * @param l the list to sort
@@ -27,6 +53,12 @@ trait Sorting[T] {
   def infEq2(l: T, r: T): Boolean
 }
 
+/** Insertion sort.
+ * 
+ * @author dameNingen <dame.ningen@mail.com>
+ * @version $Revision$
+ * $Id$
+ */
 trait InsertionSort[T] extends Sorting[T] {
 
   def sort1(l: List[T]) = sort(l,infEq1)

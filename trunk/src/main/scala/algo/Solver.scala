@@ -1,11 +1,39 @@
+/*
+ * Copyright (c) 2012 Dame Ningen.
+ * All rights reserved.
+ *
+ * This file is part of Gausel.
+ *
+ * Gausel is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Gausel is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Gausel.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package gausel.algo
 
 import  scala.collection.mutable.OpenHashMap
 
 import  gausel.data._
 
+/** Class doing the actual solving.
+ * @param originalSystem The system to solve.
+ * @param verbLevel The verbose level.
+ * 
+ * @author dameNingen <dame.ningen@mail.com>
+ * @version $Revision$
+ * $Id$
+ */
 class Solver(val originalSystem: System,
-             val verbLevel: Int = 0) extends gausel.lib.InsertionSort[(Int,Int)] with gausel.lib.Verboser {
+             val verbLevel: Int = 0) extends gausel.lib.InsertionSort[(Int,Int)] with gausel.lib.Verb {
 
   /** The system we will be working on.
    * The original one is kept for bookkeeping.
@@ -14,7 +42,6 @@ class Solver(val originalSystem: System,
 
   // Verbose related stuff.
   val name = "Solver"
-  val color = blue
 
   def infEq1(l: (Int,Int), r: (Int,Int)) = l._1 <= r._1
   def infEq2(l: (Int,Int), r: (Int,Int)) = l._2 <= r._2

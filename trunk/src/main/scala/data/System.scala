@@ -1,9 +1,33 @@
+/*
+ * Copyright (c) 2012 Dame Ningen.
+ * All rights reserved.
+ *
+ * This file is part of Gausel.
+ *
+ * Gausel is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Gausel is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Gausel.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package gausel.data
 
 import scala.collection.mutable.OpenHashMap
 
 /** Class representing a line.
  * Maps a column index to its coefficient, an arithmetic expression.
+ * 
+ * @author dameNingen <dame.ningen@mail.com>
+ * @version $Revision$
+ * $Id$
  */
 abstract class Line extends OpenHashMap[Int,Arith] {
 
@@ -154,6 +178,10 @@ abstract class Line extends OpenHashMap[Int,Arith] {
 
 /** Class representing lines, i.e. the matrix itself.
  * Maps a row index to its line.
+ * 
+ * @author dameNingen <dame.ningen@mail.com>
+ * @version $Revision$
+ * $Id$
  */
 class Lines extends OpenHashMap[Int,Line] {
   /** Returns a list of couple consisting of a line index
@@ -226,6 +254,10 @@ class Lines extends OpenHashMap[Int,Line] {
  * Contains many operations useful for Gaussian Elimination.
  * @param matrix the matrix (A) of the linear system
  * @param vector the vector (b) of the linear system
+ * 
+ * @author dameNingen <dame.ningen@mail.com>
+ * @version $Revision$
+ * $Id$
  */
 class System(matrix: List[List[Option[Arith]]],
              vector: List[Option[Arith]]) {

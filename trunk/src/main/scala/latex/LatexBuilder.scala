@@ -1,10 +1,41 @@
+/*
+ * Copyright (c) 2012 Dame Ningen.
+ * All rights reserved.
+ *
+ * This file is part of Gausel.
+ *
+ * Gausel is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Gausel is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Gausel.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package gausel.latex
 
 import  gausel.data.Output
 
+/** Creates the LaTeX file synthesizing the resolution.
+ * @param title The title of the LaTeX document.
+ * @param output The output of the resolution.
+ * @param text The content of the LaTeX document body.
+ * 
+ * @author dameNingen <dame.ningen@mail.com>
+ * @version $Revision$
+ * $Id$
+ */
 class LatexBuilder(val title: String,
                    val output: Output,
-                   val text: List[String]) extends gausel.lib.IOLib {
+                   val text: List[String]) {
+
+  def mkdirs(path: String) = (new java.io.File(path)).mkdirs
 
   val txt = text match {
     case Nil => DefaultText()
@@ -14,7 +45,7 @@ class LatexBuilder(val title: String,
   //** Prefix of the skeleton of the LaTeX main file. *//
   val skelPrefix =
     "%=====================================================================%"::
-    "%                        Making an report                             %"::
+    "%                  Setting the document class                         %"::
     "%=====================================================================%"::
     "\\documentclass[11pt,a4paper,oneside]{article}"::
     ""::
@@ -92,6 +123,12 @@ class LatexBuilder(val title: String,
 
 }
 
+/** Default body of the generated LaTeX file.
+ * 
+ * @author dameNingen <dame.ningen@mail.com>
+ * @version $Revision$
+ * $Id$
+ */
 object DefaultText {
   def apply() =
     ("\\section{Explanation}"::

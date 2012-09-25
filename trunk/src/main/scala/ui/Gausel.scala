@@ -1,11 +1,37 @@
+/*
+ * Copyright (c) 2012 Dame Ningen.
+ * All rights reserved.
+ *
+ * This file is part of Gausel.
+ *
+ * Gausel is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Gausel is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Gausel.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package gausel.ui
 
-object Gausel extends App with gausel.lib.Verboser with gausel.lib.IOLib {
+/** Gausel entry point.
+ * Handles the user input and launches the resolution.
+ * 
+ * @author dameNingen <dame.ningen@mail.com>
+ * @version $Revision$
+ * $Id$
+ */
+object Gausel extends App with gausel.lib.Verb {
 
   // Verbose stuff.
   val name = "Gausel"
   val verbLevel = 1
-  val color = cyan
 
   /** Verbose flag. */
   val verbFlag = "--verbose"
@@ -69,7 +95,15 @@ object Gausel extends App with gausel.lib.Verboser with gausel.lib.IOLib {
   verblnAlt("Output file: " + outFile)
   verblnAlt("")
 
-  val inLines = fileToList(inFull)
+  val inLines = {
+    val reader = new java.io.BufferedReader(new java.io.FileReader(inFull))
+    def loop(res: List[String] = Nil): List[String] = {
+      val line = reader.readLine()
+      if (line == null) res.reverse
+      else loop(line::res)
+    }
+    loop()
+  }
 
   verblnAlt("Parsing the input file:")
   val (title,matrix,vector,rest) = gausel.parser.SystemParser(inLines)
@@ -99,8 +133,8 @@ object Gausel extends App with gausel.lib.Verboser with gausel.lib.IOLib {
   verbln(1)
 
   verbln("Almost done, generating the tex file in [" + outPath + outFile + "].")
-  verbln("Creating the output folder.")
-  mkdirs(outPath)
+  // verbln("Creating the output folder.")
+  // mkdirs(outPath)
   val builder = new gausel.latex.LatexBuilder(title,output,rest)
   builder.writeToFile(outPath,outFile)
   verbln(1)
