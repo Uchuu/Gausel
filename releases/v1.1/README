@@ -1,0 +1,48 @@
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+Gausel
+======
+
+Developper: Dame Ningen [dame.ningen@mail.com]
+
+Gausel solves a linear system symbolically and produces a LaTeX file containing all the information linked to the resolution as new commands.
+
+Content: the archive you downloaded should contain:
+ - the present README file,
+ - the COPYING file,
+ - gausel.jar,
+ - an example folder with two example files, "testwithtext" and "testwithouttext".
+
+Gausel takes files in a special syntax as input, take a look at the examples in examples/.
+You can write LaTeX in the input file, as in examples/testwithtext.
+It will be put in the body of the resulting LaTeX file.
+You can also only specify the linear system (as in examples/testtextfree), the body of the LaTeX file will be empty.
+The syntax itself is pretty much self explanatory.
+
+You can launch gausel by running
+  java -jar gausel.jar
+which will display help as to how to use Gausel.
+
+Try it on an example with
+  java -jar gausel.jar examples/testwithtext
+The tex file will be generated in a folder called "gausel" where the input file is.
+Here, examples/gausel/testwithtext.tex.
+You can generate the corresponding pdf file by running
+  pdflatex examples/gausel/testwithtext.tex
+on linux.
+You can also specify a different output folder:
+  java -jar gausel.jar examples/testwithtext different/output/folder/
+  pdflatex different/output/folder/testwithtext.tex
+
+Do not hesitate to contact the developper for questions / bugs / other things at [dame.ningen@mail.com].

@@ -1,0 +1,184 @@
+%=====================================================================%
+%                  Setting the document class                         %
+%=====================================================================%
+\documentclass[11pt,a4paper,oneside]{article}
+
+%=====================================================================%
+%                        Packages import                              %
+%=====================================================================%
+\usepackage{graphicx,amssymb,amstext,amsmath,amsthm,hyperref,indentfirst}
+\usepackage{array,amsfonts}
+\usepackage{xspace}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{ulem}
+\usepackage{caption}
+
+%=====================================================================%
+%                 Options to make stuff look pretty                   %
+%=====================================================================%
+\hypersetup{
+  pdfborder={0 0 0},
+  colorlinks=true,
+  linkcolor=blue,
+  citecolor=blue,
+  urlcolor=blue,
+  pdftitle={
+    Solving A Simple Stupid Linear System
+  }
+}
+
+% Used to specify the space between the lines of the matrices and tabulars.
+\newcommand\matandtabspace{
+.4em
+}
+% Original system as a tabular.
+\newcommand\originaltab{
+\begin{tabular}{ c  c  c  c  c  c  c  c  c }
+   &  & $(a12 * x_{2})$ & $+$ & $(a13 * x_{3})$ & &  & $=$ & $b1$\\[\matandtabspace]
+  $(((a32 * b1) - (a12 * b3)) * ((a32 * a33) * (a22 * a41)))$ & $+$ & $(((a32 * a13) - (a12 * a33)) * (a32 * a33))$ & &  & $+$ & $(a24 * x_{4})$ & $=$ & $b2$\\[\matandtabspace]
+   &  & $(a32 * (a32 * a33))$ & $+$ & $(a33 * x_{3})$ & &  & $=$ & $b3$\\[\matandtabspace]
+  $(a41 * x_{1})$ & &  & &  & $+$ & $(a44 * x_{4})$ & $=$ & $b4$\\[\matandtabspace]
+\end{tabular}
+}
+% Original matrix.
+\newcommand\originalmat{
+\begin{pmatrix}
+  0 & a12 & a13 & 0\\[\matandtabspace]
+  a21 & a22 & 0 & a24\\[\matandtabspace]
+  0 & a32 & a33 & 0\\[\matandtabspace]
+  a41 & 0 & 0 & a44\\[\matandtabspace]
+\end{pmatrix}
+}
+% Original vector.
+\newcommand\originalvec{
+\begin{pmatrix}
+  b1\\[\matandtabspace]
+  b2\\[\matandtabspace]
+  b3\\[\matandtabspace]
+  b4\\[\matandtabspace]
+\end{pmatrix}
+}
+% Triangularized system as a tabular.
+\newcommand\triangletab{
+\begin{tabular}{ c  c  c  c  c  c  c  c  c }
+  $(a41 * x_{1})$ & &  & &  & $+$ & $(a44 * x_{4})$ & $=$ & $b4$\\[\matandtabspace]
+   &  & $(((a32 * a13) - (a12 * a33)) * (a32 * a33))$ & &  & $+$ & $\frac{(((a41 * a24) - (a21 * a44)) * x_{4})}{a41}$ & $=$ & $(((a41 * b2) - (a21 * b4)) / a41)$\\[\matandtabspace]
+   &  &  &  & $(a33 * x_{3})$ & $+$ & $(-((a32 * a13) / (a22 * a41)) * x_{4})$ & $=$ & $((((a22 * a41) * b3) - (a12 * a32)) / (a22 * a41))$\\[\matandtabspace]
+   &  &  &  &  &  & $(((a41 * a24) - (a21 * a44)) * x_{4})$ & $=$ & $(((((a32 * b1) - (a12 * b3)) * ((a32 * a33) * (a22 * a41))) - ((((a32 * a13) - (a12 * a33)) * (((a22 * a41) * b3) - (a12 * a32))) * a32)) / (a32 * ((a32 * a33) * (a22 * a41))))$\\[\matandtabspace]
+\end{tabular}
+}
+% Triangularized matrix.
+\newcommand\trianglemat{
+\begin{pmatrix}
+  a41 & 0 & 0 & a44\\[\matandtabspace]
+  0 & a22 & 0 & \frac{((a41 * a24) - (a21 * a44))}{a41}\\[\matandtabspace]
+  0 & 0 & a33 & -((a32 * a13) / (a22 * a41))\\[\matandtabspace]
+  0 & 0 & 0 & -((((a32 * a13) - (a12 * a33)) * -((a32 * a13) / (a22 * a41))) / (a32 * a33))\\[\matandtabspace]
+\end{pmatrix}
+}
+% Triangularized vector.
+\newcommand\trianglevec{
+\begin{pmatrix}
+  b4\\[\matandtabspace]
+  \frac{((a41 * b2) - (a21 * b4))}{a41}\\[\matandtabspace]
+  \frac{(((a22 * a41) * b3) - (a12 * a32))}{(a22 * a41)}\\[\matandtabspace]
+  \frac{((((a32 * b1) - (a12 * b3)) * ((a32 * a33) * (a22 * a41))) - ((((a32 * a13) - (a12 * a33)) * (((a22 * a41) * b3) - (a12 * a32))) * a32))}{(a32 * ((a32 * a33) * (a22 * a41)))}\\[\matandtabspace]
+\end{pmatrix}
+}
+% Variable vector.
+\newcommand\variablevec{
+\begin{pmatrix}
+  x_1\\[\matandtabspace]
+  x_2\\[\matandtabspace]
+  x_3\\[\matandtabspace]
+  x_4\\[\matandtabspace]
+\end{pmatrix}
+}
+% Solution as a tabular.
+\newcommand\solutiontab{
+\begin{tabular}{ c c l }
+  $x_1$ & $=$ & $\frac{((((a32 * ((a32 * a33) * (a22 * a41))) * -((((a32 * a13) - (a12 * a33)) * -((a32 * a13) / (a22 * a41))) / (a32 * a33))) * b4) - (a44 * ((((a32 * b1) - (a12 * b3)) * ((a32 * a33) * (a22 * a41))) - ((((a32 * a13) - (a12 * a33)) * (((a22 * a41) * b3) - (a12 * a32))) * a32))))}{(a41 * ((a32 * ((a32 * a33) * (a22 * a41))) * -((((a32 * a13) - (a12 * a33)) * -((a32 * a13) / (a22 * a41))) / (a32 * a33))))}$\\[\matandtabspace]
+  $x_2$ & $=$ & $\frac{((((a41 * b2) - (a21 * b4)) * (a41 * ((a32 * ((a32 * a33) * (a22 * a41))) * -((((a32 * a13) - (a12 * a33)) * -((a32 * a13) / (a22 * a41))) / (a32 * a33))))) - ((a32 * a13) * a41))}{((a41 * (a41 * ((a32 * ((a32 * a33) * (a22 * a41))) * -((((a32 * a13) - (a12 * a33)) * -((a32 * a13) / (a22 * a41))) / (a32 * a33))))) * a22)}$\\[\matandtabspace]
+  $x_3$ & $=$ & $\frac{(((((a22 * a41) * b3) - (a12 * a32)) * ((a32 * ((a32 * a33) * (a22 * a41))) * -((((a32 * a13) - (a12 * a33)) * -((a32 * a13) / (a22 * a41))) / (a32 * a33)))) - ((a12 * a32) * (a22 * a41)))}{(((a22 * a41) * ((a32 * ((a32 * a33) * (a22 * a41))) * -((((a32 * a13) - (a12 * a33)) * -((a32 * a13) / (a22 * a41))) / (a32 * a33)))) * a33)}$\\[\matandtabspace]
+  $x_4$ & $=$ & $\frac{((((a32 * b1) - (a12 * b3)) * ((a32 * a33) * (a22 * a41))) - ((((a32 * a13) - (a12 * a33)) * (((a22 * a41) * b3) - (a12 * a32))) * a32))}{((a32 * ((a32 * a33) * (a22 * a41))) * -((((a32 * a13) - (a12 * a33)) * -((a32 * a13) / (a22 * a41))) / (a32 * a33)))}$\\[\matandtabspace]
+\end{tabular}
+}
+% Solution as a vector.
+\newcommand\solutionmat{
+\begin{pmatrix}
+  \frac{((((a32 * ((a32 * a33) * (a22 * a41))) * -((((a32 * a13) - (a12 * a33)) * -((a32 * a13) / (a22 * a41))) / (a32 * a33))) * b4) - (a44 * ((((a32 * b1) - (a12 * b3)) * ((a32 * a33) * (a22 * a41))) - ((((a32 * a13) - (a12 * a33)) * (((a22 * a41) * b3) - (a12 * a32))) * a32))))}{(a41 * ((a32 * ((a32 * a33) * (a22 * a41))) * -((((a32 * a13) - (a12 * a33)) * -((a32 * a13) / (a22 * a41))) / (a32 * a33))))}\\[\matandtabspace]
+  \frac{((((a41 * b2) - (a21 * b4)) * (a41 * ((a32 * ((a32 * a33) * (a22 * a41))) * -((((a32 * a13) - (a12 * a33)) * -((a32 * a13) / (a22 * a41))) / (a32 * a33))))) - ((a32 * a13) * a41))}{((a41 * (a41 * ((a32 * ((a32 * a33) * (a22 * a41))) * -((((a32 * a13) - (a12 * a33)) * -((a32 * a13) / (a22 * a41))) / (a32 * a33))))) * a22)}\\[\matandtabspace]
+  \frac{(((((a22 * a41) * b3) - (a12 * a32)) * ((a32 * ((a32 * a33) * (a22 * a41))) * -((((a32 * a13) - (a12 * a33)) * -((a32 * a13) / (a22 * a41))) / (a32 * a33)))) - ((a12 * a32) * (a22 * a41)))}{(((a22 * a41) * ((a32 * ((a32 * a33) * (a22 * a41))) * -((((a32 * a13) - (a12 * a33)) * -((a32 * a13) / (a22 * a41))) / (a32 * a33)))) * a33)}\\[\matandtabspace]
+  \frac{((((a32 * b1) - (a12 * b3)) * ((a32 * a33) * (a22 * a41))) - ((((a32 * a13) - (a12 * a33)) * (((a22 * a41) * b3) - (a12 * a32))) * a32))}{((a32 * ((a32 * a33) * (a22 * a41))) * -((((a32 * a13) - (a12 * a33)) * -((a32 * a13) / (a22 * a41))) / (a32 * a33)))}\\[\matandtabspace]
+\end{pmatrix}
+}
+
+%==================================================================%
+%                         Title and author(s)                      %
+%==================================================================%
+\title{
+  Solving A Simple Stupid Linear System
+}
+\author{
+}
+
+%==================================================================%
+%                    Let's start the document                      %
+%==================================================================%
+\begin{document}
+\normalem
+
+%==================================================================%
+%                              Title                               %
+%==================================================================%
+\maketitle
+
+%==================================================================%
+%                         Document body                            %
+%==================================================================%
+
+\section{Original system}
+\label{original}
+Assuming the unknown variable vector is represented as $\variablevec$,
+what we do is solve the following problem:
+\[
+\originalmat
+ *
+\variablevec
+=
+\originalvec
+. \]
+Equivalently, we can consider the following linear system:\\
+\originaltab
+
+\section{Triangularized system}
+\label{triangle}
+Now, using Gaussian Elimination we obtain the following matrix equation:
+\[
+\trianglemat
+*
+\variablevec
+=
+\trianglevec
+\]
+Equivalently, the linear system:\\
+\triangletab
+
+\section{Solution}
+Now, the solution for the system described in Section~\ref{original} and
+triangularized in Section~\ref{triangle} is:
+\[ \solutionmat \]
+It can also be written as equalities:\\
+\solutiontab
+
+\section{Conclusion}
+I don't know who did this but it's pretty fucking awesome.
+\newline
+
+See ya.
+
+%=================================================================%
+%                      End of the Document                        %
+%=================================================================%
+\end{document}

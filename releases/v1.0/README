@@ -1,0 +1,33 @@
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+Gausel
+======
+
+Solves a linear system symbolically and produces a LaTeX file containing all the information linked to the resolution as new commands.
+
+Content: the archive you downloaded should contain:
+ - the present README file,
+ - gausel_2.9.2-1.0-onejar.jar,
+ - an example folder with two example files, "testwithtext" and "testwithouttext".
+
+Gausel takes files in a special syntax as input, take a look at the examples in examples/.
+You can put LaTeX in the input file, as in examples/testwithtext.
+It will be put in the body of the resulting LaTeX file.
+You can also only specify the linear system (as in examples/testtextfree), the body of the LaTeX file will be empty.
+The syntax itself is pretty much self explanatory.
+
+Try it on an example with
+java -jar gausel_2.9.2-1.0-onejar.jar examples/testwithtext
+
+Do not hesitate to contact the developper for questions / bugs / other things.

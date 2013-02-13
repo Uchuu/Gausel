@@ -31,7 +31,7 @@ object Gausel extends App with gausel.lib.Verb {
 
   // Verbose stuff.
   val name = "Gausel"
-  val verbLevel = 1
+  val verbLevel = 0
 
   /** Verbose flag. */
   val verbFlag = "--verbose"
@@ -71,10 +71,12 @@ object Gausel extends App with gausel.lib.Verb {
   if (cleanArgs.length < 1) {
     verbln("Error: no parameter detected.")
     printHelp()
-    System.exit(0)
+    sys exit 0
   }
 
-  val inFull = cleanArgs(0)
+  val inFull = cleanArgs(0) map (
+    char => if (char == '\\') '/' else char
+  )
   val (inPath,inFile,inNakedFile) = {
     val lastSlash = inFull.lastIndexOf('/')
     val file = inFull.drop(lastSlash+1)
@@ -85,8 +87,11 @@ object Gausel extends App with gausel.lib.Verb {
   }
 
   val outPath =
-    if (cleanArgs.length > 1) cleanArgs(1)
-    else inPath + inNakedFile + "gausel/"
+    if (cleanArgs.length > 1) {
+      val temp = cleanArgs(1)
+      if (temp endsWith "/") temp
+      else temp + "/"
+    } else inPath + "gausel/"
   val outFile = inNakedFile + ".tex"
 
   verblnAlt("Input path: " + inPath)
@@ -122,6 +127,8 @@ object Gausel extends App with gausel.lib.Verb {
   solver.toStringList.foreach(l => verbln("  " + l))
   verbln(1)
 
+  val startTime = System.currentTimeMillis
+
   verbln("Triangularizing the system:")
   solver.triangularize()
   solver.toStringList.foreach(l => verbln("  " + l))
@@ -132,17 +139,23 @@ object Gausel extends App with gausel.lib.Verb {
   output.solution.foreach(c => verbln("  " + c._1 + " => " + c._2))
   verbln(1)
 
+  val time = (System.currentTimeMillis - startTime) / 1000
+
   verbln("Almost done, generating the tex file in [" + outPath + outFile + "].")
   // verbln("Creating the output folder.")
   // mkdirs(outPath)
   val builder = new gausel.latex.LatexBuilder(title,output,rest)
   builder.writeToFile(outPath,outFile)
-  verbln(1)
 
-  verbln("Done, result file is in folder [" + outPath + outFile + "].")
+  verbln(0)
+  verbln(0)
+  verbln("Done, resolution took " + (time.toString) + " seconds.",0)
+  verbln("Tex file generated at [" + outPath + outFile + "].",0)
+  verbln("To generate the pdf file, run",0)
+  verbln("  \033[31;1mpdflatex " + outPath + outFile + "\033[0m",0)
+  verbln(0)
+  verbln(0)
 
-  verbln(1)
-
-  sys.exit(0)
+  sys exit 0
 
 }
