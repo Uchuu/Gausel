@@ -29,6 +29,7 @@ Do not hesitate to contact the developper for questions / bugs / other things.
 
 
 Changelog:
+======
 
 1.1:
 - now uses sbt 0.12.1 with scala 2.9.2.
