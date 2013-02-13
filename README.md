@@ -32,6 +32,8 @@ Changelog:
 ======
 
 1.1:
+=====
+
 - now uses sbt 0.12.1 with scala 2.9.2.
 - now runs on windows, although the ansi escape sequence are not recognized (no color and weird 03331;1m appear in the terminal).
 - less verbose.
