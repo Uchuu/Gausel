@@ -185,7 +185,7 @@ object DefaultText {
      "\\solutiontab"::
      ""::
      "\\section{Conclusion}"::
-     "I don't know who did this but it's pretty fucking awesome."::
+     "I don't know who did this but it's pretty awesome."::
      "\\newline"::
      ""::
      "See ya."::
