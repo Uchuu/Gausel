@@ -29,14 +29,14 @@ package gausel.ui
  */
 object Gausel extends App with gausel.lib.Verb {
 
-  // Verbose stuff.
-  val name = "Gausel"
-  val verbLevel = 0
-
   /** Verbose flag. */
   val verbFlag = "--verbose"
   /** Gausel legal flags. */
   val flags = verbFlag::Nil
+
+  // Verbose stuff.
+  val name = "Gausel"
+  val verbLevel = if (args contains verbFlag) 1 else 0
 
   /** Contains the usage instructions. */
   val help =
