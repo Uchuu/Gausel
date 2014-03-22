@@ -26,7 +26,7 @@ package gausel.test
  * @version $Revision$
  * $Id$
  */
-object TestSorts extends App with gausel.lib.Verboser with gausel.lib.InsertionSort[Int] {
+object TestSorts extends App with gausel.lib.Verb with gausel.lib.InsertionSort[Int] {
 
   // Verbose related stuff.
   val name = "TestSorts"
@@ -34,9 +34,9 @@ object TestSorts extends App with gausel.lib.Verboser with gausel.lib.InsertionS
     if (args.length > 0) try {
       args(0).toInt
     } catch {
-      case e => 1
+      case e: Throwable => 1
     } else 1
-  val color = cyan
+  val color = Colors.cyan
 
   // Checks if a list of integers is sorted.
   def isSorted(l: List[Int]): Boolean = l match {

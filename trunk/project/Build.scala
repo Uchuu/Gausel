@@ -10,11 +10,9 @@ object GauselBuild extends Build {
         organization := "standard",
         version := "1.1",
         name := "gausel",
-        scalaVersion := "2.9.2",
-        scalacOptions ++= Seq(/* "-feature", */ "-deprecation",
-                              "-unchecked", "-optimise",
-                              "-encoding", "utf8"),
-        scaladocOptions := Seq("-doc-title", "Gausel"),
+        scalaVersion := "2.10.3",
+        scalacOptions ++=
+          Seq("-feature", "-deprecation","-unchecked", "-optimise","-encoding", "utf8"),
         exportJars := true
       ) ++ oneJarSettings
   )

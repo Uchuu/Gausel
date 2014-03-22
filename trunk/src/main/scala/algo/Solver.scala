@@ -35,6 +35,8 @@ import  gausel.data._
 class Solver(val originalSystem: System,
              val verbLevel: Int = 0) extends gausel.lib.InsertionSort[(Int,Int)] with gausel.lib.Verb {
 
+  val color = Colors.green
+
   /** The system we will be working on.
    * The original one is kept for bookkeeping.
    */

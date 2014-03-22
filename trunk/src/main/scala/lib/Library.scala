@@ -30,10 +30,22 @@ package gausel.lib
 trait Verb {
   val verbLevel: Int
   val name: String
+  val color: Int
 
-  def verb(s: => String, v: Int = 1) = if (v <= verbLevel) print("[\033[32;1m" + name + "\033[0m] " + s)
-  def verbln(s: => String, v: Int = 1) = if (v <= verbLevel) println("[\033[32;1m" + name + "\033[0m] " + s)
+  object Colors {
+    val red = 31
+    val green = 32
+    val yellow = 33
+    val blue = 34
+    val magenta = 35
+    val cyan = 36
+  }
+
+  lazy val prefix = "[\033[" + color + ";1m" + name + "\033[0m] "
+
+  def verb(s: => String, v: Int = 1) = if (v <= verbLevel) print(s)
+  def verbln(s: => String, v: Int = 1) = if (v <= verbLevel) println(prefix + s)
   def verbln(v: Int) = if (v <= verbLevel) println
   def verbList(ss: => List[String], v: Int = 1) =
-    if (v <= verbLevel) for (s <- ss) println("[\033[32;1m" + name + "\033[0m] " + s)
+    if (v <= verbLevel) for (s <- ss) println(prefix + s)
 }

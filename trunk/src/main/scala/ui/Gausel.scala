@@ -29,6 +29,8 @@ package gausel.ui
  */
 object Gausel extends App with gausel.lib.Verb {
 
+  val color = Colors.blue
+
   /** Verbose flag. */
   val verbFlag = "--verbose"
   /** Gausel legal flags. */

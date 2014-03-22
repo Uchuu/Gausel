@@ -29,7 +29,7 @@ import  gausel.algo.Solver
  * @version $Revision$
  * $Id$
  */
-object TestSolver extends App with gausel.lib.Verboser {
+object TestSolver extends App with gausel.lib.Verb {
 
   // Verbose related stuff.
   val name = "TestSolver"
@@ -37,14 +37,14 @@ object TestSolver extends App with gausel.lib.Verboser {
     if (args.length > 0) try {
       args(0).toInt
     } catch {
-      case e => 1
+      case e: Throwable => 1
     } else 1
-  val color = cyan
+  val color = Colors.cyan
   val solverVerbLevel =
     if (args.length > 0) try {
       args(0).toInt
     } catch {
-      case e => 0
+      case e: Throwable => 0
     } else 0
 
   val path = "test"
@@ -54,16 +54,19 @@ object TestSolver extends App with gausel.lib.Verboser {
   // Easily done by a parser reading a file.
   // Note that the matrix is filled, zeros are None-s but
   // they are present.
-  val matrix1: List[List[Option[String]]] =
-    (None        :: None        :: Some("a13") :: Nil) ::
-    (Some("a21") :: Some("a22") :: None        :: Nil) ::
-    (None        :: Some("a32") :: Some("a33") :: Nil) :: Nil
-  val matrix2: List[List[Option[String]]] =
-    (None        :: Some("a12") :: Some("a13") :: Nil) ::
-    (Some("a21") :: Some("a22") :: None        :: Nil) ::
-    (None        :: Some("a32") :: Some("a33") :: Nil) :: Nil
+  val (a12,a13,a21,a22,a32,a33) =
+    (Ident("a12"), Ident("a13"), Ident("a21"), Ident("a22"), Ident("a32"), Ident("a33"))
+  val (b1,b2,b3) = (Ident("b1"), Ident("b2"), Ident("b3"))
+  val matrix1: List[List[Option[Arith]]] =
+    (None      :: None      :: Some(a13) :: Nil) ::
+    (Some(a21) :: Some(a22) :: None      :: Nil) ::
+    (None      :: Some(a32) :: Some(a33) :: Nil) :: Nil
+  val matrix2: List[List[Option[Arith]]] =
+    (None      :: Some(a12) :: Some(a13) :: Nil) ::
+    (Some(a21) :: Some(a22) :: None      :: Nil) ::
+    (None      :: Some(a32) :: Some(a33) :: Nil) :: Nil
   // Creating the vector as a List[String].
-  val vector : List[String] = "b1"::"b2"::"b3"::Nil
+  val vector : List[Option[Arith]] = Some(b1) :: Some(b2) :: Some(b3) :: Nil
   // Creating the actual system class.
   val system = new System(matrix2,vector)
   val systemForSolver = new System(matrix2,vector)

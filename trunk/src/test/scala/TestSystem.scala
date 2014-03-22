@@ -28,12 +28,12 @@ import  gausel.data._
  * @version $Revision$
  * $Id$
  */
-object TestSystem extends App with gausel.lib.Verboser {
+object TestSystem extends App with gausel.lib.Verb {
 
   // Verbose related stuff.
   val name = "TestSystem"
   val verbLevel = 1
-  val color = cyan
+  val color = Colors.cyan
 
   // Creating a matrix as a List[List[Option[String]]].
   // Easily done by a parser reading a file.
@@ -43,12 +43,12 @@ object TestSystem extends App with gausel.lib.Verboser {
     (Ident("a13"),Ident("a21"),Ident("a22"),Ident("a32"),Ident("a33"))
   val (b1,b2,b3) =
     (Ident("b1"),Ident("b2"),Ident("b3"))
-  val matrix: List[List[Option[String]]] =
+  val matrix: List[List[Option[Arith]]] =
     (None      :: None      :: Some(a13) :: Nil) ::
     (Some(a21) :: Some(a22) :: None      :: Nil) ::
     (None      :: Some(a32) :: Some(a33) :: Nil) :: Nil
   // Creating the vector as a List[String].
-  val vector : List[String] = b1::b2::b3::Nil
+  val vector : List[Option[Arith]] = Some(b1) :: Some(b2) :: Some(b3) :: Nil
   // Creating the actual system class.
   val system = new System(matrix,vector)
 

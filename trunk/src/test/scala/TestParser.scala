@@ -26,12 +26,12 @@ package gausel.test
  * @version $Revision$
  * $Id$
  */
-object TestParser extends App with gausel.lib.Verboser {
+object TestParser extends App with gausel.lib.Verb {
 
   // Verbose related stuff.
   val name = "TestParser"
   val verbLevel = 1
-  val color = cyan
+  val color = Colors.cyan
 
   val toParse =
     "title {"::
