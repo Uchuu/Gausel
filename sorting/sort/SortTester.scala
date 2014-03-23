@@ -14,10 +14,10 @@ trait SortTester extends App with Verboser {
   def title(s: String, n: Int = 1) = verbln("|=======| " + s + " |=======|", n)
 
   val referenceAlgorithms =
-    uchuu.insertionSortTailrec :: uchuu.insertionSort :: Nil
+    uchuu.quickSort :: Nil // uchuu.insertionSort :: Nil
   val algorithms: List[Sort]
   val listSizes =
-    10 :: 100 :: 1000 :: 10000 :: 100000 :: 1000000 :: Nil
+    10 :: 100 :: 1000 :: 10000 :: 100000 :: 1000000 :: 10000000 :: Nil
   val maxInt = 100
 
   def run() = {
@@ -64,7 +64,6 @@ trait SortTester extends App with Verboser {
     val firstChars = string.size % 3
     @tailrec
     def loop(s: String, prefix: String): String = s.size match {
-      case 3 => s + prefix
       case n if n > 0 => loop(s drop 3, prefix + "," + (s take 3))
       case 0 => prefix
       case _ => throw new Exception("Unexpected string length " + s + ".")
@@ -76,14 +75,13 @@ trait SortTester extends App with Verboser {
   def printFormat(
     name: String, author: String, sorted: Boolean, time: Long, authorColor: Color
   ) = {
-    val sortedColor =
-      if (sorted) "\033[" + Cyan + ";1msorted\033[0m"
-      else        "\033[" + Red  + ";1mnot sorted\033[0m"
-    val timeString = formatTime(time) + " ms"
+    val (sortedString,sortedColor) =
+      if (sorted) ("sorted",Cyan.toString) else ("not sorted",Red.toString)
+    val timeString = formatTime(time)
     verbPrefix("")
     printf(
-      "%30s by \033[%s;1m%-10s\033[0m | %10s | %-20s\n", name, authorColor,
-      author, sortedColor, timeString
+      "%30s by \033[%s;1m%-10s\033[0m | \033[%s;1m%10s\033[0m | %20s ms\n",
+      name, authorColor, author, sortedColor, sortedString, timeString
     )
   }
 }
