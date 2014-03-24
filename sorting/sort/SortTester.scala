@@ -29,12 +29,16 @@ trait SortTester extends App with Verboser {
     private var _gp: Option[String] = None
     def gp_=(nuGp: String) = _gp = Some(nuGp)
     def gp = _gp
+    private var _keepGp = false
+    def keepGp_=(nu: Boolean) = _keepGp = nu
+    def keepGp = _keepGp
   }
 
   protected val name = Some("Sort Tester")
   protected val color = Cyan
   protected var verbLevel = 2
   def space(n: Int = 1) = if (verbLevel >= n) println
+  def done(n: Int = 1) = verb("done.\n", n)
   def title(s: String, n: Int = 1) = verbln("|=======| " + s + " |=======|", n)
 
   val optionsDef: List[OptionDef] = {
@@ -48,6 +52,8 @@ trait SortTester extends App with Verboser {
       "<int>: maximum value of the random integers populating the lists (default 100).") ::
     ("--gp=", { s: String => Options.gp = optionValue(s) },
       "<path>: generates a gnuplot data file at the specified path.") ::
+    ("--keepGp", { s: String => Options.gp = optionValue(s) },
+      ": keeps the gnuplot script and data used to generate the graph.") ::
     Nil
   }
 
@@ -101,7 +107,7 @@ trait SortTester extends App with Verboser {
       if (verbLevel >= 2) printf("%15s", formatTime(size))
       verb(" ... ", 2)
       val result = Seq.fill(size)(scala.util.Random.nextInt(maxInt)).toList
-      verb("done.\n", 2)
+      done()
       result
     })
     verbln("Done.")
@@ -279,25 +285,32 @@ set xtics nomirror
 
       verbPrefix("Generating gnuplot data file [" + path + "]... ")
       printData(path)
-      println("done.")
+      done()
 
       verbPrefix("Generating gnuplot script [" + path + ".gp]... ")
       printScript(path + ".gp", path)
-      println("done.")
+      done()
 
       val logger = ProcessLogger((o: String) => (), (e: String) => ())
 
       verbPrefix("Making gnuplot script executable... ")
       val chmod = "chmod u+x " + path + ".gp"
       chmod ! logger
-      println("done.")
+      done()
       verbln("Command used: [" + chmod + "].")
 
       verbPrefix("Generating graph as a png file [" + path + ".png]... ")
       val gnuplot = "./" + path + ".gp"
       gnuplot ! logger
-      println("done.")
+      done()
       verbln("Command used: [" + gnuplot + "].")
+
+      if (!Options.keepGp) {
+        verbPrefix("Deleting [" + path + "] and [" + path + ".gp] used to create the graph... ")
+        val rm = "rm " + path + " " + path + ".gp"
+        rm ! logger
+        done()
+      }
 
       verbln("")
     }
