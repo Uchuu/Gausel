@@ -1,7 +1,16 @@
-package sortTester
+package sorttester
 
-/** Run class. */
+/** This is the executable object performing the benchmarking.
+  * User defined algorithms should be registered in '''algorithms'''. */
 object Run extends sort.SortTester {
-  val algorithms: List[sort.Sort] = Nil
+
+  /** Register your algorithms here. */
+  val algorithms: List[sort.Sort] = {
+    foufou.fakeSort ::
+    foufou.fakeRevSort ::
+    Nil
+  }
+
+  /** Launching benchmarks. */
   run()
 }

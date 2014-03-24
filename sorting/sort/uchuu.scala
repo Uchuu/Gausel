@@ -15,17 +15,20 @@ package object uchuu {
 
     val name = "quick sort"
 
-    def apply(toSort: List[Element]) = {
+    def apply(toSort: List[Element], timeout: Int) = {
       def loop(
         list: List[Element], continuation: List[Element] => List[Element] = l => l
       ): List[Element] = list match {
         case _ :: Nil | Nil => continuation(list)
         case pivot :: t => {
           val (le,gt) = split(t, e => e <= pivot)
-          loop(le, sortedLe => loop(gt, sortedGt => sortedLe ++ (pivot :: sortedGt)))
+          Timer.check
+          loop(le, sortedLe => loop(gt, sortedGt => continuation(sortedLe ++ (pivot :: sortedGt))))
         }
       }
-      loop(toSort)
+      Timer.start(timeout)
+      val res = loop(toSort)
+      res
     }
     @tailrec
     def split(
@@ -42,12 +45,13 @@ package object uchuu {
 
     val name = "insertion sort"
 
-    def apply(toSort: List[Element]) = {
+    def apply(toSort: List[Element], timeout: Int) = {
       @tailrec
       def loop(list: List[Element], sortedList: List[Element] = Nil): List[Element] = list match {
-        case h :: t => loop(t, insert(h, sortedList))
+        case h :: t => { Timer.check ; loop(t, insert(h, sortedList)) }
         case Nil => sortedList
       }
+      Timer.start(timeout)
       loop(toSort)
     }
 
@@ -67,10 +71,62 @@ package object uchuu {
     }
   }
 
+  /** Merge sort object. */
+  val mergeSort = new UchuuSort {
+    val name = "merge sort"
+    def apply(list: List[Element], timeout: Int) = {
+      @tailrec
+      def bottomUpMerge(
+        list: List[List[Element]], temp: List[List[Element]] = Nil
+      ): List[Element] = { Timer.check ; list match {
+        case h1 :: h2 :: t => bottomUpMerge(t, sublistSorting(h1,h2) :: temp)
+        case h :: Nil => if (temp.size == 0) h else bottomUpMerge(h :: temp)
+        case Nil => temp match {
+          case h :: Nil => h
+          case _ => bottomUpMerge(temp)
+        }
+      }}
+
+      Timer.start(timeout)
+      bottomUpMerge(list map (e => e :: Nil))
+    }
+
+    @tailrec
+    def sublistSorting(
+      sList1: List[Element], sList2: List[Element], revPrefix: List[Element] = Nil
+    ): List[Element] = (sList1,sList2) match {
+      case (h1 :: t1, h2 :: t2) if (h2 <= h1) => sublistSorting(sList1, t2, h2 :: revPrefix)
+      case (h1 :: t1, h2 :: t2) if (h1 <= h2) => sublistSorting(t1, sList2, h1 :: revPrefix)
+      case (_, Nil) => revPrefix reverse_::: sList1
+      case (Nil, _) => revPrefix reverse_::: sList2
+      case _ => throw new Exception("Should be unreachable.")
+    }
+  }
+
   /** Bubble sort object. */
   val bubbleSort = new UchuuSort {
     val name = "bubble sort"
-    def apply(list: List[Element]) = list
+
+    def apply(list: List[Element], timeout: Int) = {
+      @tailrec
+      def loop(l: List[Element]): List[Element] = {
+        Timer.check
+        val (swappedList,swapped) = swap(l)
+        if (swapped) loop(swappedList) else swappedList
+      }
+      Timer.start(timeout)
+      loop(list)
+    }
+
+    @tailrec
+    def swap(
+      list: List[Element], revPrefix: List[Element] = Nil, swapped: Boolean = false
+    ): (List[Element], Boolean) = list match {
+      case h1 :: h2 :: t if h2 < h1 => swap(h1 :: t, h2 :: revPrefix, true)
+      case h1 :: h2 :: t if h1 <= h2 => swap(h2 :: t, h1 :: revPrefix, swapped)
+      case h :: Nil => ((h :: revPrefix).reverse, swapped)
+      case Nil => (revPrefix.reverse, swapped)
+    }
   }
 
 }
