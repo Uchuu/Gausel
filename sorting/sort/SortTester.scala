@@ -16,6 +16,9 @@ trait SortTester extends App with Verboser {
   def optionValue(s: String) = s.split("=")(1)
 
   object Options {
+    private var _noReference = false
+    def noReference_=(nu: Boolean) = _noReference = nu
+    def noReference = _noReference
     private var _timeout = -1
     def timeout_=(to: Int) = _timeout = to
     def timeout = _timeout
@@ -37,6 +40,8 @@ trait SortTester extends App with Verboser {
   val optionsDef: List[OptionDef] = {
     ("-h", {s: String => { printHelp() ; sys exit 0 }}, ": prints this message.") ::
     ("--help", {s: String => { printHelp() ; sys exit 0 }}, ": prints this message.") ::
+    ("--noReference", { s: String => Options.noReference = true },
+      ": prevents reference algorithms from running.") ::
     ("--to=", { s: String => Options.timeout = optionValue(s).toInt },
       "<int>: specify a timeout in milliseconds (default None).") ::
     ("--max=", { s: String => Options.max = optionValue(s).toInt },
@@ -72,8 +77,9 @@ trait SortTester extends App with Verboser {
   }
 
   val referenceAlgorithms = {
-    uchuu.quickSort ::
     uchuu.mergeSort ::
+    uchuu.quickSort ::
+    uchuu.insertionSort ::
     uchuu.bubbleSort ::
     Nil
   }
@@ -118,7 +124,7 @@ trait SortTester extends App with Verboser {
 
   def test(list: List[Element]) = {
     verbln("Testing with a list of size \033[1m" + formatTime(list.size) + "\033[0m.")
-    referenceAlgorithms foreach (algo => oneBench(list,algo,Blue))
+    if (!Options.noReference) referenceAlgorithms foreach (algo => oneBench(list,algo,Blue))
     algorithms foreach (algo => oneBench(list,algo,Magenta))
   }
 
@@ -224,7 +230,7 @@ trait SortTester extends App with Verboser {
         // Writing script config.
         write("""#!/usr/bin/gnuplot
 reset
-set terminal png
+set terminal pngcairo size 1000,600
 set output """")
         write(path) ; write(".png")
         write(""""

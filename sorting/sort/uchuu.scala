@@ -13,18 +13,31 @@ package object uchuu {
   /** Quick sort object. */
   val quickSort = new UchuuSort {
 
-    val name = "quick sort"
+    val name = "quick sort tailrec"
 
     def apply(toSort: List[Element], timeout: Int) = {
+      @tailrec
       def loop(
-        list: List[Element], continuation: List[Element] => List[Element] = l => l
-      ): List[Element] = list match {
-        case _ :: Nil | Nil => continuation(list)
+        list: List[Element], // continuation: List[Element] => List[Element] = l => l,
+        greater: List[(Element,List[Element])] = Nil,
+        revRes: List[Element] = Nil
+      ): List[Element] = {
+        list match {
+          case Nil => greater match {
+            case h :: t => loop(h._2, t, h._1 :: revRes)
+            case Nil => revRes.reverse
+          }
+          case head :: Nil => greater match {
+            case h :: t => loop(h._2, t, h._1 :: head :: revRes)
+            case Nil => (head :: revRes).reverse
+          }
         case pivot :: t => {
           val (le,gt) = split(t, e => e <= pivot)
           Timer.check
-          loop(le, sortedLe => loop(gt, sortedGt => continuation(sortedLe ++ (pivot :: sortedGt))))
+          loop(le, (pivot,gt) :: greater, revRes)
+          // loop(le, sortedLe => loop(gt, sortedGt => continuation(sortedLe ++ (pivot :: sortedGt))))
         }
+      }
       }
       Timer.start(timeout)
       val res = loop(toSort)
@@ -43,7 +56,7 @@ package object uchuu {
   /** Insertion sort object. */
   val insertionSort = new UchuuSort {
 
-    val name = "insertion sort"
+    val name = "insertion sort tailrec"
 
     def apply(toSort: List[Element], timeout: Int) = {
       @tailrec
@@ -73,7 +86,7 @@ package object uchuu {
 
   /** Merge sort object. */
   val mergeSort = new UchuuSort {
-    val name = "merge sort"
+    val name = "merge sort tailrec"
     def apply(list: List[Element], timeout: Int) = {
       @tailrec
       def bottomUpMerge(
@@ -105,7 +118,7 @@ package object uchuu {
 
   /** Bubble sort object. */
   val bubbleSort = new UchuuSort {
-    val name = "bubble sort"
+    val name = "bubble sort tailrec"
 
     def apply(list: List[Element], timeout: Int) = {
       @tailrec
